@@ -19,3 +19,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 Route::post('/admin/login', [AdminController::class, 'index']);
+Route::get('/admin/breed/list', [AdminController::class, 'breed']);
+Route::match(['get', 'post'],'/admin/breed/edit/{id?}', [AdminController::class, 'breed_edit']);

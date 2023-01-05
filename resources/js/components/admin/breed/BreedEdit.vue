@@ -84,7 +84,12 @@ export default {
         }
     },
     methods:{
-
+        ...mapActions({
+            addBreed:'breed/add'
+        }),
+        async add_breed(){
+            this.addBreed(this.breed);
+        }
     }
 
 }

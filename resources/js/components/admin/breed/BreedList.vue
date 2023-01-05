@@ -40,32 +40,27 @@
                                                             <th>Status</th>
                                                             <th>Action</th>
                                                         </tr>
-                                                    </thead>
+                                                    </thead>                                                    
                                                     <tbody>
                                                         
-                                                        <tr class="unread">
-                                                            <td>id</td>
-                                                            <td>name</td>
-                                                            <td>Type</td>
+                                                        <tr class="unread" v-for="breed in breeds.data" :key="breed.id">
+                                                            <td>{{breed.id}}</td>
+                                                            <td>{{breed.breed}}</td>
+                                                            <td>{{breed.type}}</td>
                                                             <td>
                                                                 <h6 class="text-muted">
-                                                                   
-                                                                        <i class="fas fa-circle text-c-green f-10 m-r-15"></i>Active
-                                                                    
-                                                                        <i class="fas fa-circle text-c-red f-10 m-r-15"></i>Inactive
-                                                                   
+                                                                    <i class="fas fa-circle text-c-green f-10 m-r-15" v-if="breed.status==1">Active</i>
+                                                                    <i class="fas fa-circle text-c-red f-10 m-r-15" v-if="breed.status==0">Inactive</i>
                                                                 </h6>
                                                             </td>
                                                             <td>
-                                                                <a href="{{route('admin_ammunition_subcategory_edit',['id'=>$val['id']])}}" class="label theme-bg2 text-white f-12">Edit</a>
-                                                                <a href="{{route('admin_ammunition_subcategory_delete',['id'=>$val['id']])}}" class="label theme-bg text-white f-12" onclick="return delete_confirmation();">Delete</a>
+                                                                <a href="javascript:void(0);" @click="edit_breed(breed.id)" class="label theme-bg2 text-white f-12">Edit</a>
+                                                                <a href="javascript:void(0);" @click="delete_breed(breed.id)" class="label theme-bg text-white f-12">Delete</a>
                                                             </td>
-                                                        </tr>
-                                                        
-                                                            <tr class="unread">  
-                                                                <td colspan="4">No Record Found.</td>
-                                                            </tr> 
-                                                        
+                                                        </tr>                                                        
+                                                        <tr class="unread" v-if="breeds.data.length==0">  
+                                                            <td colspan="5">No Record Found. {{breeds}}</td>
+                                                        </tr> 
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -84,8 +79,26 @@
 </template>
 
 <script>
+import { mapActions,mapGetters,mapState } from 'vuex'
 export default {
-    name:'BreedList'
+    name:'BreedList',
+    computed: {
+         ...mapState('breed',['breeds'])
+        // ...mapGetters({         
+        //   breed_listing: 'breed/breed_listing'
+        // })
+    },
+    methods:{
+        ...mapActions({
+            breed_list:'breed/listing'
+        }),
+        async breedlist(){
+            this.breed_list();
+        }
+    },
+    mounted: function(){
+        this.$nextTick(this.breed_list)
+    }
 }
 </script>
 
