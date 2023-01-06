@@ -35,8 +35,8 @@ class AdminController extends Controller{
         }
         return view('admin.login');
     } 
-    public function breed(Request $request){
-        $result=Breed::paginate(10);
+    public function breed(Request $request,$all=null){
+        $result=(!empty($all))?Breed::all():Breed::paginate(10);
         $heading="Breed";
         return response()->json(['success' => true,'result'=>$result,'heading'=>$heading], $this->successStatus);
     }
@@ -80,7 +80,11 @@ class AdminController extends Controller{
         if ($request->isMethod('post')) {
             $lastInsertedId="";
             $msg="";
-            $data_info=['breed'=>$request->breed,'type'=>$request->type,'doodle'=>$request->doodle];
+            $data_info=$request->all();
+            if(!empty($data_info['puppies_name'])){
+                $data_info['name']=$data_info['puppies_name'];
+                unset($data_info['puppies_name']);
+            }
             if(!empty($request->puppy_id)){
                 Puppies::where('id', $request->puppy_id)->update($data_info);
                 $lastInsertedId=true;

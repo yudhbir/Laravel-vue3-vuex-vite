@@ -3,13 +3,14 @@ import router from '@/router'
 export default {
     namespaced: true,
     state:{
-        puppies:{},
+        puppiesInfo:{},
+        breeds:{},
         processing:false,
 
     },
     getters:{
         puppies_listing(state){
-            return state.puppies
+            return state.puppiesInfo
         }
     },
     mutations:{        
@@ -17,13 +18,16 @@ export default {
             state.processing = value
         },
         SETUP_PUPPIES (state, value) {
-            state.puppies = value
+            state.puppiesInfo = value
         },
         DELETE_PUPPIES (state, value) {
-            state.puppies.data =  [
-                ...state.puppies.data.filter(element => element.id !== value)
+            state.puppiesInfo.data =  [
+                ...state.puppiesInfo.data.filter(element => element.id !== value)
             ]
-        }         
+        },
+        SELECTION_BREEDS (state, value) {
+            state.breeds = value
+        },         
     },
     actions:{
         add({commit},breed_info){
@@ -43,6 +47,17 @@ export default {
                 if(data.success){
                     commit('SET_PROCESSING',false);
                     commit('SETUP_PUPPIES',data.result);
+                }
+            }).catch(({response:{data}})=>{               
+                commit('SET_PROCESSING',false)
+            })
+        },
+        breeds({commit}){
+            return axios.get('/api/admin/breed/list/all').then(({data})=>{
+                // console.log(data);
+                if(data.success){
+                    commit('SET_PROCESSING',false);
+                    commit('SELECTION_BREEDS',data.result);
                 }
             }).catch(({response:{data}})=>{               
                 commit('SET_PROCESSING',false)

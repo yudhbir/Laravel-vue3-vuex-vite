@@ -34,61 +34,67 @@
                                                         <form name="brand_frm" id="brand_frm" method="post" action="javascript:void(0);" enctype="multipart/form-data" @submit="add_puppy">
                                                             <div class="form-group">
                                                                 <label>Name</label>
-                                                                <input type="text" class="form-control required" placeholder="Enter Name" name="puppies_name" v-model="puppies.puppies_name" />
+                                                                <input type="text" class="form-control required" placeholder="Enter Name" name="puppies_name" v-model="puppies_info.puppies_name" />
                                                             </div> 
                                                             <div class="form-group">
                                                                 <label>Age</label>
-                                                                <input type="text" class="form-control required" placeholder="Enter Age" name="age" v-model="puppies.age" />
+                                                                <input type="text" class="form-control required" placeholder="Enter Age" name="age" v-model="puppies_info.age" />
                                                             </div>
                                                             <div class="form-group">
                                                                 <label>DOB</label>
-                                                                <input type="text" class="form-control required" placeholder="Enter DOB" name="dob" v-model="puppies.dob" />
+                                                                <input type="text" class="form-control required" placeholder="Enter DOB" name="dob" v-model="puppies_info.dob" />
                                                             </div>                                                            
                                                             <div class="form-group">
                                                                 <label>Breed </label>
-                                                                <select class="form-control required" name="breed" v-model="puppies.breed">
-                                                                    <option value="1">Pure</option>
-                                                                    <option value="2">Designed</option>
+                                                                <select class="form-control required" name="breed" v-model="puppies_info.breed">
+                                                                    <option value="breed.id" v-for="breed in breeds" :key="breed.id">{{breed.breed}}</option>
                                                                 </select>
                                                             </div>
                                                             <div class="form-group">
                                                                 <label>Registery</label>
-                                                                <input type="text" class="form-control required" placeholder="Enter Registery" name="registery" v-model="puppies.registery" />
+                                                                <input type="text" class="form-control required" placeholder="Enter Registery" name="registery" v-model="puppies_info.registery" />
                                                             </div> 
                                                             <div class="form-group">
                                                                 <label>Weight</label>
-                                                                <input type="text" class="form-control required" placeholder="Enter Weight" name="weight" v-model="puppies.weight" />
+                                                                <input type="text" class="form-control required" placeholder="Enter Weight" name="weight" v-model="puppies_info.weight" />
                                                             </div>
                                                             <div class="form-group">
                                                                 <label>Collection</label>
-                                                                <input type="text" class="form-control required" placeholder="Enter Collection" name="collection" v-model="puppies.collection" />
+                                                                <input type="text" class="form-control required" placeholder="Enter Collection" name="collection" v-model="puppies_info.collection" />
                                                             </div>
                                                             <div class="form-group">
                                                                 <label>Vaccination</label>
-                                                                <input type="text" class="form-control required" placeholder="Enter Vaccination" name="vaccination" v-model="puppies.vaccination" />
+                                                                <div class="form-check form-check-inline mx-4">
+                                                                    <input class="form-check-input" type="radio" name="vaccination" id="inlineRadio1" v-model="puppies_info.vaccination">
+                                                                    <label class="form-check-label" for="inlineRadio1">YES</label>
+                                                                </div>
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="radio" name="vaccination" id="inlineRadio2" v-model="puppies_info.vaccination">
+                                                                    <label class="form-check-label" for="inlineRadio2">NO</label>
+                                                                </div>
                                                             </div>
                                                             <div class="form-group">
                                                                 <label>Color</label>
-                                                                <input type="text" class="form-control required" placeholder="Enter Color" name="color" v-model="puppies.color" />
+                                                                <input type="text" class="form-control required" placeholder="Enter Color" name="color" v-model="puppies_info.color" />
                                                             </div>
                                                             <div class="form-group">
                                                                 <label>Gender</label>
-                                                                <input type="text" class="form-control required" placeholder="Enter Gender" name="gender" v-model="puppies.gender" />
+                                                                <input type="text" class="form-control required" placeholder="Enter Gender" name="gender" v-model="puppies_info.gender" />
                                                             </div>
                                                             <div class="form-group">
                                                                 <label>Price</label>
-                                                                <input type="text" class="form-control required" placeholder="Enter price" name="price" v-model="puppies.price" />
+                                                                <input type="text" class="form-control required" placeholder="Enter price" name="price" v-model="puppies_info.price" />
                                                             </div>
                                                             <div class="form-group">
                                                                 <label>Vendor Name</label>
-                                                                <input type="text" class="form-control required" placeholder="Enter Vendor Name" name="vendor_name" v-model="puppies.vendor_name" />
+                                                                <input type="text" class="form-control required" placeholder="Enter Vendor Name" name="vendor_name" v-model="puppies_info.vendor_name" />
                                                             </div>
                                                             <div class="form-group">
                                                                 <label>Vendor Url</label>
-                                                                <input type="text" class="form-control required" placeholder="Enter price" name="vendor_url" v-model="puppies.vendor_url" />
+                                                                <input type="text" class="form-control required" placeholder="Enter price" name="vendor_url" v-model="puppies_info.vendor_url" />
                                                             </div>
                                                             <br/>                                                          
-                                                            <input type="hidden" name="puppy_id" v-model="puppies.puppy_id" v-if="puppies.puppy_id">
+                                                            <input type="hidden" name="puppy_id" v-model="puppies_info.puppy_id" v-if="puppies_info.puppy_id">
                                                             <button type="submit" class="btn btn-primary">Submit</button>
                                                         </form>
                                                     </div>
@@ -113,7 +119,7 @@ export default {
     data(){
         return {
             title:"Add",
-            puppies:{                
+            puppies_info:{                
                 puppies_name:"",
                 age:"",
                 dob:"",
@@ -134,7 +140,7 @@ export default {
         }
     },
     computed: {
-        ...mapState('puppies',['puppies'])
+        ...mapState('puppies',['puppiesInfo','breeds'])
     },
     methods:{
         ...mapActions({
@@ -146,15 +152,16 @@ export default {
         }
     },
     mounted: async function(){
+        // Edit Case: 
         if(this.$route.params.id){
             this.title='Edit';
             let id=this.$route.params.id;
-            if(!!this.puppies.data){
-                let _data= this.puppies.data.filter(element => element.id == id);
+            if(!!this.puppiesInfo.data){
+                let _data= this.puppiesInfo.data.filter(element => element.id == id);
                 // console.log(id);
                 _data=JSON.parse(JSON.stringify(_data))
                 let newOrExistingProps = {
-                    puppies_name: _data[0]?.puppies_name,
+                    puppies_name: _data[0]?.name,
                     age: _data[0]?.age,
                     dob: _data[0]?.dob,
                     breed: _data[0]?.breed,
@@ -169,7 +176,7 @@ export default {
                     vendor_url: _data[0]?.vendor_url,
                     puppy_id: _data[0]?.id,
                 }
-                this.puppies = {...this.puppies, ...newOrExistingProps}
+                this.puppies_info = {...this.puppies_info, ...newOrExistingProps}
                 // console.log(this.breed);
             }
         }

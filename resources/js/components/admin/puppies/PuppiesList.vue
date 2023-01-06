@@ -42,7 +42,7 @@
                                                         </tr>
                                                     </thead>                                                    
                                                     <tbody >
-                                                        <tr class="unread" v-for="puppy in puppies?.data" :key="puppy.id">
+                                                        <tr class="unread" v-for="puppy in puppiesInfo?.data" :key="puppy.id">
                                                             <td>{{puppy.id}}</td>
                                                             <td>{{puppy.breed}}</td>
                                                             <td>{{puppy.type}}</td>
@@ -57,7 +57,7 @@
                                                                 <a href="javascript:void(0);" @click="delete_breed(puppy.id)" class="label theme-bg text-white f-12">Delete</a>
                                                             </td>
                                                         </tr>                                           
-                                                        <tr class="unread" v-if="!puppies?.data">  
+                                                        <tr class="unread" v-if="!puppiesInfo?.data">  
                                                             <td colspan="5">No Record Found.</td>
                                                         </tr> 
                                                     </tbody>
@@ -82,21 +82,23 @@ import { mapActions,mapGetters,mapState } from 'vuex'
 export default {
     name:'PuppiesList',
     computed: {
-         ...mapState('puppies',['puppies'])
+         ...mapState('puppies',['puppiesInfo'])
         // ...mapGetters({         
         //   breed_listing: 'breed/breed_listing'
         // })
     },
     methods:{
         ...mapActions({
-            puppy_list:'puppies/listing'
+            puppy_list:'puppies/listing',
+            breed_list:'puppies/breeds',
         }),
         async puppylist(){
             this.puppy_list();
         }
     },
-    mounted: function(){
-        this.$nextTick(this.puppylist)
+    mounted: async function(){
+        await this.$nextTick(this.puppylist);
+        await this.$nextTick(this.breed_list);
     }
 }
 </script>
