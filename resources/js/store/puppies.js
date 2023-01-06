@@ -3,46 +3,46 @@ import router from '@/router'
 export default {
     namespaced: true,
     state:{
-        breeds:{},
+        puppies:{},
         processing:false,
 
     },
     getters:{
-        breed_listing(state){
-            return state.breeds
+        puppies_listing(state){
+            return state.puppies
         }
     },
     mutations:{        
         SET_PROCESSING (state, value) {
             state.processing = value
         },
-        SETUP_BREEDS (state, value) {
-            state.breeds = value
+        SETUP_PUPPIES (state, value) {
+            state.puppies = value
         },
-        DELETE_BREEDS (state, value) {
-            state.breeds.data =  [
-                ...state.breeds.data.filter(element => element.id !== value)
+        DELETE_PUPPIES (state, value) {
+            state.puppies.data =  [
+                ...state.puppies.data.filter(element => element.id !== value)
             ]
-        }        
+        }         
     },
     actions:{
         add({commit},breed_info){
             // console.log(breed_info);return false;
-            return axios.post('/api/admin/breed/edit',breed_info).then(({data})=>{
+            return axios.post('/api/admin/puppies/edit',breed_info).then(({data})=>{
                 if(data.success){
                     commit('SET_PROCESSING',true)
-                    router.push({name:'admin_puppies_breed'})
+                    router.push({name:'admin_puppies_list'})
                 }
             }).catch(({response:{data}})=>{               
                 commit('SET_PROCESSING',false)
             })
         },
         listing({commit}){
-            return axios.get('/api/admin/breed/list').then(({data})=>{
+            return axios.get('/api/admin/puppies/list').then(({data})=>{
                 // console.log(data);
                 if(data.success){
                     commit('SET_PROCESSING',false);
-                    commit('SETUP_BREEDS',data.result);
+                    commit('SETUP_PUPPIES',data.result);
                 }
             }).catch(({response:{data}})=>{               
                 commit('SET_PROCESSING',false)
@@ -53,7 +53,7 @@ export default {
                 // console.log(data);
                 if(data.success){
                     commit('SET_PROCESSING',false);
-                    commit('DELETE_BREEDS',id);
+                    commit('DELETE_PUPPIES',id);
                 }
             }).catch(({response:{data}})=>{               
                 commit('SET_PROCESSING',false)

@@ -45,8 +45,8 @@ class AdminController extends Controller{
             $lastInsertedId="";
             $msg="";
             $data_info=['breed'=>$request->breed_name,'type'=>$request->breed_type,'doodle'=>(!empty($request->doodle))?$request->doodle:0];
-            if(!empty($request->id)){
-                Breed::where('id', $request->id)->update($data_info);
+            if(!empty($request->breed_id)){
+                Breed::where('id', $request->breed_id)->update($data_info);
                 $lastInsertedId=true;
                 $msg="updated";
             }else{
@@ -81,8 +81,8 @@ class AdminController extends Controller{
             $lastInsertedId="";
             $msg="";
             $data_info=['breed'=>$request->breed,'type'=>$request->type,'doodle'=>$request->doodle];
-            if(!empty($request->id)){
-                Puppies::where('id', $request->id)->update($data_info);
+            if(!empty($request->puppy_id)){
+                Puppies::where('id', $request->puppy_id)->update($data_info);
                 $lastInsertedId=true;
                 $msg="updated";
             }else{

@@ -31,7 +31,7 @@
                                         </div>
                                         <div class="card-block px-0 py-3">
                                             <div class="table-responsive">
-                                                <table class="table table-hover">
+                                                 <table class="table table-hover">
                                                     <thead>
                                                         <tr>
                                                             <th>Id</th>
@@ -40,32 +40,26 @@
                                                             <th>Status</th>
                                                             <th>Action</th>
                                                         </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        
-                                                        <tr class="unread">
-                                                            <td>id</td>
-                                                            <td>name</td>
-                                                            <td>Type</td>
+                                                    </thead>                                                    
+                                                    <tbody >
+                                                        <tr class="unread" v-for="puppy in puppies?.data" :key="puppy.id">
+                                                            <td>{{puppy.id}}</td>
+                                                            <td>{{puppy.breed}}</td>
+                                                            <td>{{puppy.type}}</td>
                                                             <td>
                                                                 <h6 class="text-muted">
-                                                                   
-                                                                        <i class="fas fa-circle text-c-green f-10 m-r-15"></i>Active
-                                                                    
-                                                                        <i class="fas fa-circle text-c-red f-10 m-r-15"></i>Inactive
-                                                                   
+                                                                    <i class="fas fa-circle text-c-green f-10 m-r-15" v-if="puppy.status==1">Active</i>
+                                                                    <i class="fas fa-circle text-c-red f-10 m-r-15" v-if="puppy.status==0">Inactive</i>
                                                                 </h6>
                                                             </td>
                                                             <td>
-                                                                <a href="{{route('admin_ammunition_subcategory_edit',['id'=>$val['id']])}}" class="label theme-bg2 text-white f-12">Edit</a>
-                                                                <a href="{{route('admin_ammunition_subcategory_delete',['id'=>$val['id']])}}" class="label theme-bg text-white f-12" onclick="return delete_confirmation();">Delete</a>
+                                                                <a href="javascript:void(0);" @click="edit_breed(puppy.id)" class="label theme-bg2 text-white f-12">Edit</a>
+                                                                <a href="javascript:void(0);" @click="delete_breed(puppy.id)" class="label theme-bg text-white f-12">Delete</a>
                                                             </td>
-                                                        </tr>
-                                                        
-                                                            <tr class="unread">  
-                                                                <td colspan="4">No Record Found.</td>
-                                                            </tr> 
-                                                        
+                                                        </tr>                                           
+                                                        <tr class="unread" v-if="!puppies?.data">  
+                                                            <td colspan="5">No Record Found.</td>
+                                                        </tr> 
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -84,8 +78,26 @@
 </template>
 
 <script>
+import { mapActions,mapGetters,mapState } from 'vuex'
 export default {
-    name:'PuppiesList'
+    name:'PuppiesList',
+    computed: {
+         ...mapState('puppies',['puppies'])
+        // ...mapGetters({         
+        //   breed_listing: 'breed/breed_listing'
+        // })
+    },
+    methods:{
+        ...mapActions({
+            puppy_list:'puppies/listing'
+        }),
+        async puppylist(){
+            this.puppy_list();
+        }
+    },
+    mounted: function(){
+        this.$nextTick(this.puppylist)
+    }
 }
 </script>
 

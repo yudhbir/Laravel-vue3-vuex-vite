@@ -127,6 +127,23 @@ const routes = [
         ]
     },
     {
+        path: "/admin/puppies/breed/edit/:id",
+        component: AdminLayout,
+        meta: {
+            middleware: "adminauth"
+        },
+        children: [
+            {
+                name: "admin_puppies_breed_edit",
+                path: '/admin/puppies/breed/edit/:id',
+                component: BreedEdit,
+                meta: {
+                    title: `Puppies Breed edit`
+                }
+            }
+        ]
+    },
+    {
         path: "/admin/puppies/list",
         component: AdminLayout,
         meta: {
@@ -159,7 +176,24 @@ const routes = [
                 }
             }
         ]
-    }
+    },
+    // {
+    //     path: "/admin/puppies/edit/:id",
+    //     component: AdminLayout,
+    //     meta: {
+    //         middleware: "adminauth"
+    //     },
+    //     children: [
+    //         {
+    //             name: "admin_puppies_edit",
+    //             path: '/admin/puppies/edit',
+    //             component: PuppiesEdit,
+    //             meta: {
+    //                 title: `Puppies Edit`
+    //             }
+    //         }
+    //     ]
+    // }
 ]
 const router = createRouter({
     history: createWebHistory(),

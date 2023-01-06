@@ -8,12 +8,12 @@
                                 <div class="row align-items-center">
                                     <div class="col-md-12">
                                         <div class="page-header-title">
-                                            <h5 class="m-b-10">Add Breed</h5>
+                                            <h5 class="m-b-10">{{title}} Breed</h5>
                                         </div>
                                         <ul class="breadcrumb">
                                             <li class="breadcrumb-item"><a href="javascript:void(0);"><i class="feather icon-home"></i></a></li>
                                             <li class="breadcrumb-item"><router-link :to="{name:'admin_dashboard'}">Dashboard</router-link></li>
-                                            <li class="breadcrumb-item"><a href="javascript:">Add Breed</a></li>
+                                            <li class="breadcrumb-item"><a href="javascript:">{{title}} Breed</a></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -26,7 +26,7 @@
                                     <div class="col-sm-12">
                                         <div class="card">
                                             <div class="card-header">
-                                                <h5>Breed Add</h5>
+                                                <h5>Breed {{title}}</h5>
                                             </div>
                                             <div class="card-body">                                                
                                                 <div class="row">
@@ -44,13 +44,13 @@
                                                                 </select>
                                                             </div>
                                                             <div class="form-check">
-                                                                <input class="form-check-input" type="checkbox" name="doodle" v-model="breed.doodle" id="flexCheckDefault">
+                                                                <input class="form-check-input" type="checkbox" name="doodle" v-model="breed.doodle" id="flexCheckDefault" :checked="breed.doodle">
                                                                 <label class="form-check-label" for="flexCheckDefault">
                                                                     Doodle
                                                                 </label>
                                                             </div> 
                                                             <br/>                                                          
-                                                            <input type="hidden" name="id" value="">
+                                                            <input type="hidden" name="breed_id" v-model="breed.breed_id" v-if="!!breed.breed_id">
                                                             <button type="submit" class="btn btn-primary">Submit</button>
                                                         </form>
                                                     </div>
@@ -69,26 +69,52 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions,mapState } from 'vuex'
+
 export default {
     name:"BreedEdit",
     data(){
         return {
+            title:"Add",
             breed:{                
                 breed_name:"",
                 breed_type:"",
-                doodle:""
+                doodle:"",
+                breed_id:"",
             },
             validationErrors:{},
             processing:false
         }
     },
+    computed: {
+        ...mapState('breed',['breeds'])
+    },
     methods:{
         ...mapActions({
-            addBreed:'breed/add'
+            addBreed:'breed/add',
+            // getBreed:'breed/get',
         }),
         async add_breed(){
             this.addBreed(this.breed);
+        }
+    },
+    mounted: async function(){
+        if(this.$route.params.id){
+            this.title='Edit';
+            let id=this.$route.params.id;
+            if(!!this.breeds.data){
+                let breed_data= this.breeds.data.filter(element => element.id == id);
+                // console.log(id);
+                breed_data=JSON.parse(JSON.stringify(breed_data))
+                let newOrExistingProps = {
+                    breed_name: breed_data[0]?.breed,
+                    breed_type: breed_data[0]?.type,
+                    doodle: breed_data[0]?.doodle,
+                    breed_id: breed_data[0]?.id,
+                }
+                this.breed = {...this.breed, ...newOrExistingProps}
+                // console.log(this.breed);
+            }
         }
     }
 
