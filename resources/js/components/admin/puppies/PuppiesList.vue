@@ -36,7 +36,10 @@
                                                         <tr>
                                                             <th>Id</th>
                                                             <th>Name</th>
-                                                            <th>Type</th>
+                                                            <th>Age</th>
+                                                            <th>Color</th>
+                                                            <th>Price</th>
+                                                            <th>Registery</th>
                                                             <th>Status</th>
                                                             <th>Action</th>
                                                         </tr>
@@ -44,8 +47,11 @@
                                                     <tbody >
                                                         <tr class="unread" v-for="puppy in puppiesInfo?.data" :key="puppy.id">
                                                             <td>{{puppy.id}}</td>
-                                                            <td>{{puppy.breed}}</td>
-                                                            <td>{{puppy.type}}</td>
+                                                            <td>{{puppy.name}}</td>
+                                                            <td>{{puppy.age}}</td>
+                                                            <td>{{puppy.color}}</td>
+                                                            <td>{{puppy.price}}</td>
+                                                            <td>{{puppy.registery}}</td>
                                                             <td>
                                                                 <h6 class="text-muted">
                                                                     <i class="fas fa-circle text-c-green f-10 m-r-15" v-if="puppy.status==1">Active</i>
@@ -53,7 +59,8 @@
                                                                 </h6>
                                                             </td>
                                                             <td>
-                                                                <a href="javascript:void(0);" @click="edit_breed(puppy.id)" class="label theme-bg2 text-white f-12">Edit</a>
+                                                                <!-- <a href="javascript:void(0);" @click="edit_breed(puppy.id)" class="label theme-bg2 text-white f-12">Edit</a> -->
+                                                                <router-link :to="{name:'admin_puppies_edit',params:{id:puppy.id}}" class="label theme-bg2 text-white f-12">Edit</router-link>
                                                                 <a href="javascript:void(0);" @click="delete_breed(puppy.id)" class="label theme-bg text-white f-12">Delete</a>
                                                             </td>
                                                         </tr>                                           

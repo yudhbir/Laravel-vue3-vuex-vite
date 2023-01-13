@@ -10,6 +10,8 @@ import './plugins/jquery-3.2.1.min.js'
 import Router from '@/router'
 import store from '@/store'
 import { createApp } from 'vue';
+import Datepicker from 'vue3-datepicker'
+import VueYupValidation from 'vue-yup-validation'
 
 /**
  * Next, we will create a fresh Vue application instance. You may then begin
@@ -41,4 +43,6 @@ app.component('example-component', ExampleComponent);
  */
 app.use(Router)
 app.use(store)
+app.component('Datepicker', Datepicker);
+app.component('VueYupValidation', VueYupValidation);
 app.mount('#app');

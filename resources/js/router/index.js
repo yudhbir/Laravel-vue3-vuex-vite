@@ -177,23 +177,23 @@ const routes = [
             }
         ]
     },
-    // {
-    //     path: "/admin/puppies/edit/:id",
-    //     component: AdminLayout,
-    //     meta: {
-    //         middleware: "adminauth"
-    //     },
-    //     children: [
-    //         {
-    //             name: "admin_puppies_edit",
-    //             path: '/admin/puppies/edit',
-    //             component: PuppiesEdit,
-    //             meta: {
-    //                 title: `Puppies Edit`
-    //             }
-    //         }
-    //     ]
-    // }
+    {
+        path: "/admin/puppies/edit/:id",
+        component: AdminLayout,
+        meta: {
+            middleware: "adminauth"
+        },
+        children: [
+            {
+                name: "admin_puppies_edit",
+                path: '/admin/puppies/edit/:id',
+                component: PuppiesEdit,
+                meta: {
+                    title: `Puppies Edit`
+                }
+            }
+        ]
+    }
 ]
 const router = createRouter({
     history: createWebHistory(),

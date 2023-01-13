@@ -81,12 +81,19 @@ class AdminController extends Controller{
             $lastInsertedId="";
             $msg="";
             $data_info=$request->all();
+            // dd($data_info);
+            $puppy_id="";
             if(!empty($data_info['puppies_name'])){
                 $data_info['name']=$data_info['puppies_name'];
                 unset($data_info['puppies_name']);
+                if(!empty($data_info['puppy_id'])){
+                    $puppy_id= $request->puppy_id;
+                }
+                unset($data_info['puppy_id']);
+                $data_info['dob']=date('Y-m-d',strtotime($data_info['dob']));              
             }
-            if(!empty($request->puppy_id)){
-                Puppies::where('id', $request->puppy_id)->update($data_info);
+            if(!empty($puppy_id)){
+                Puppies::where('id', $puppy_id)->update($data_info);
                 $lastInsertedId=true;
                 $msg="updated";
             }else{
