@@ -41,8 +41,8 @@ export default {
                 commit('SET_PROCESSING',false)
             })
         },
-        listing({commit}){
-            return axios.get('/api/admin/puppies/list').then(({data})=>{
+        listing({commit},page='1'){
+            return axios.get('/api/admin/puppies/list?page='+page).then(({data})=>{
                 // console.log(data);
                 if(data.success){
                     commit('SET_PROCESSING',false);

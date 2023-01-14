@@ -72,6 +72,7 @@
                                             </div>
                                         </div>
                                         <!-- {{ $result->links() }} -->
+                                        <pagination :total-pages="puppiesInfo.total" :total="puppiesInfo.total" :per-page="puppiesInfo.per_page" :current-page="currentPage" @pagechanged="onPageChange" v-if="puppiesInfo.total>puppiesInfo.per_page"/>
                                     </div>
                                 </div>
                             </div>
@@ -85,9 +86,18 @@
 </template>
 
 <script>
+import pagination from '../../helpers/Pagination.vue'
 import { mapActions,mapGetters,mapState } from 'vuex'
 export default {
     name:'PuppiesList',
+    components:{
+        pagination
+    },
+    data(){
+        return{
+            currentPage:1
+        }
+    },
     computed: {
          ...mapState('puppies',['puppiesInfo'])
         // ...mapGetters({         
@@ -101,6 +111,11 @@ export default {
         }),
         async puppylist(){
             this.puppy_list();
+        },
+        onPageChange(page) {
+            console.log(page)
+            this.currentPage = page;
+            this.puppy_list(page);
         }
     },
     mounted: async function(){

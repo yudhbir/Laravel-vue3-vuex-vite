@@ -67,6 +67,7 @@
                                             </div>
                                         </div>
                                         <!-- {{ $result->links() }} -->
+                                         <pagination :total-pages="breeds.total" :total="breeds.total" :per-page="breeds.per_page" :current-page="currentPage" @pagechanged="onPageChange" v-if="breeds.total>breeds.per_page"/>
                                     </div>
                                 </div>
                             </div>
@@ -80,10 +81,19 @@
 </template>
 
 <script>
+import pagination from '../../helpers/Pagination.vue'
 import { mapActions,mapGetters,mapState } from 'vuex'
 import router from '@/router'
 export default {
     name:'BreedList',
+    components:{
+        pagination
+    },
+    data(){
+        return{
+            currentPage:1
+        }
+    },
     computed: {
          ...mapState('breed',['breeds'])
         // ...mapGetters({         
@@ -103,6 +113,11 @@ export default {
         },
         async edit_breed(id){
             // router.push({ name: 'admin_puppies_breed_edit', params: { id: id } })
+        },
+        onPageChange(page) {
+            console.log(page)
+            this.currentPage = page;
+            this.puppy_list(page);
         }
     },
     mounted: function(){
