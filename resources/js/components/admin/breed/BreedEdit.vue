@@ -31,17 +31,20 @@
                                             <div class="card-body">                                                
                                                 <div class="row">
                                                     <div class="col-md-12">
-                                                        <form name="brand_frm" id="brand_frm" method="post" action="javascript:void(0);" enctype="multipart/form-data" @submit="add_breed">
+                                                        <!-- <form name="brand_frm" id="brand_frm" method="post" action="javascript:void(0);" enctype="multipart/form-data" @submit="add_breed"> -->
+                                                        <vue-yup-validation :schema="schema" @submit="add_breed" :values="breed" :validFieldOnChange="true" v-slot="{ errors }" >
                                                             <div class="form-group">
                                                                 <label>Breed</label>
                                                                 <input type="text" class="form-control required" placeholder="Enter Breed Name" name="breed_name" v-model="breed.breed_name" />
+                                                                <span v-if="errors?.breed_name" class="errors"> {{ errors?.breed_name }} </span>
                                                             </div> 
                                                             <div class="form-group">
                                                                 <label>Breed Type</label>
-                                                                <select class="form-control required" name="breed_type" v-model="breed.breed_type">
+                                                                <select class="form-select required" name="breed_type" v-model="breed.breed_type">
                                                                     <option value="1">Pure</option>
                                                                     <option value="2">Designed</option>
                                                                 </select>
+                                                                <span v-if="errors?.breed_type" class="errors"> {{ errors?.breed_type }} </span>
                                                             </div>
                                                             <div class="form-check">
                                                                 <input class="form-check-input" type="checkbox" name="doodle" v-model="breed.doodle" id="flexCheckDefault" :checked="breed.doodle">
@@ -52,7 +55,8 @@
                                                             <br/>                                                          
                                                             <input type="hidden" name="breed_id" v-model="breed.breed_id" v-if="!!breed.breed_id">
                                                             <button type="submit" class="btn btn-primary">Submit</button>
-                                                        </form>
+                                                        <!-- </form> -->
+                                                         </vue-yup-validation>
                                                     </div>
                                                 </div>
                                             </div>
@@ -69,6 +73,7 @@
 </template>
 
 <script>
+import * as yup from "yup";
 import { mapActions,mapState } from 'vuex'
 
 export default {
@@ -76,6 +81,12 @@ export default {
     data(){
         return {
             title:"Add",
+             schema: yup.object().shape({
+                breed_name: yup.string().required('breed name is a required field'),
+                breed_type: yup.string().required('breed type is a required field'),               
+                doodle: yup.string(),
+                breed_id: yup.string()
+            }),
             breed:{                
                 breed_name:"",
                 breed_type:"",
@@ -94,7 +105,7 @@ export default {
             addBreed:'breed/add',
             // getBreed:'breed/get',
         }),
-        async add_breed(){
+        async add_breed(values){
             this.addBreed(this.breed);
         }
     },
@@ -122,5 +133,8 @@ export default {
 </script>
 
 <style>
-
+.errors {
+    color: red;
+    font-style: italic;
+}
 </style>

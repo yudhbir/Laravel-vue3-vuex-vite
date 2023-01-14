@@ -33,6 +33,12 @@
                                                     <div class="col-md-12">
                                                         <!-- <form name="brand_frm" id="brand_frm" method="post" action="javascript:void(0);" enctype="multipart/form-data" @submit="add_puppy"> -->
                                                         <vue-yup-validation :schema="schema" @submit="add_puppy" :values="puppies_info" :validFieldOnChange="true" v-slot="{ errors }" >
+                                                             <div class="form-group">
+                                                                <label>Image</label>
+                                                                <input type="file" class="form-control required" placeholder="Enter puppies image" name="puppies_image" @change="onChange" accept="image/*"/>
+                                                                <span v-if="errors?.puppies_image" class="errors"> {{ errors?.puppies_image }} </span>
+                                                                <img :src="puppies_info.imageUrl" width="100" height="100" v-if="!!puppies_info.imageUrl" class="puppy_avatar">
+                                                            </div>
                                                             <div class="form-group">
                                                                 <label>Name</label>
                                                                 <input type="text" class="form-control required" placeholder="Enter Name" name="puppies_name" v-model="puppies_info.puppies_name" />
@@ -115,6 +121,7 @@
                                                             </div>
                                                             <br/>                                                          
                                                             <input type="hidden" name="puppy_id" v-model="puppies_info.puppy_id" v-if="!!puppies_info.puppy_id">
+                                                             <input type="hidden" name="imageUrl" v-model="puppies_info.imageUrl" v-if="!!puppies_info.imageUrl">
                                                             <button type="submit" class="btn btn-primary">Submit</button>
                                                         <!-- </form> -->
                                                         </vue-yup-validation>
@@ -143,6 +150,8 @@ export default {
         return {
             title:"Add",
             schema: yup.object().shape({
+                // puppies_image: yup.string().required('puppy image is a required field'),
+                puppies_image: yup.string().when("imageUrl",(imageUrl) => { if(imageUrl.length==0) return yup.string().required("puppy image is a required field") }),
                 puppies_name: yup.string().required('puppy name is a required field'),
                 age: yup.string().required('age is a required field'),
                 dob: yup.string().required(),
@@ -156,9 +165,11 @@ export default {
                 price: yup.string().required(),
                 vendor_name: yup.string().required('vendor name is a required field'),
                 vendor_url: yup.string().required('vendor url is a required field'),
-                puppy_id: yup.string()
+                puppy_id: yup.string(),
+                imageUrl: yup.string(),
             }),
             puppies_info:{                
+                puppies_image:"",
                 puppies_name:"",
                 age:"",
                 dob:new Date(),
@@ -172,7 +183,8 @@ export default {
                 price:"",
                 vendor_name:"",
                 vendor_url:"",
-                puppy_id:""
+                puppy_id:"",
+                imageUrl:"",
             },
             puppy_gender:{
                 '1':'Male',
@@ -195,7 +207,18 @@ export default {
             // let _data=JSON.parse(JSON.stringify(values))
             // console.log(this.puppies_info);return false;
             this.addPuppies(this.puppies_info);
+        },
+        onChange(e) {
+            const file = e.target.files[0];
+            this.puppies_info.puppies_image = file.name;
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = e =>{
+                this.puppies_info.imageUrl = e.target.result;
+            };
+            
         }
+
     },
     mounted: async function(){
         // Edit Case: 
@@ -204,10 +227,11 @@ export default {
             let id=this.$route.params.id;
             if(!!this.puppiesInfo.data){
                 let _data= this.puppiesInfo.data.filter(element => element.id == id);
-                // console.log(_data);
                 _data=JSON.parse(JSON.stringify(_data))
+                // console.log(_data);
                 let newOrExistingProps = {
                     puppies_name: _data[0]?.name,
+                    imageUrl: _data[0]?.imageUrl,
                     age: _data[0]?.age,
                     dob: new Date(_data[0]?.dob),
                     breed: _data[0]?.breed,
@@ -235,5 +259,9 @@ export default {
 .errors {
     color: red;
     font-style: italic;
+}
+.puppy_avatar{
+    margin-top: 12px;
+    border-radius: 20px;
 }
 </style>

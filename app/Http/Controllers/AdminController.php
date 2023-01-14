@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Models\Breed;
 use App\Models\Puppies;
 use Session;
+use File;
  
 class AdminController extends Controller{
     
@@ -83,6 +84,23 @@ class AdminController extends Controller{
             $data_info=$request->all();
             // dd($data_info);
             $puppy_id="";
+            if(!empty($data_info['puppies_image']) && !empty($data_info['imageUrl'])){
+                $image_data=$data_info['imageUrl'];
+                list($type, $image_data) = explode(';', $image_data);
+                list(, $image_data)      = explode(',', $image_data);
+                $image_data = base64_decode($image_data);
+                $file_name=time().'_'.$data_info['puppies_image'];
+                $storage_path='uploads/puppies/';         
+                $destinationPath = public_path().'/'.$storage_path;
+                File::makeDirectory($destinationPath, $mode = 0777, true, true);
+
+                $destinationPath = $destinationPath.''.$file_name;
+                file_put_contents($destinationPath, $image_data);
+
+                $storage_path='/'.$storage_path.$file_name;  
+                $data_info['imageUrl']=$storage_path;
+
+            }
             if(!empty($data_info['puppies_name'])){
                 $data_info['name']=$data_info['puppies_name'];
                 unset($data_info['puppies_name']);
