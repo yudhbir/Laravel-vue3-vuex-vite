@@ -3,6 +3,7 @@ import store from '@/store'
 /* Guest Component */
 const Login = () => import('@/components/Login.vue')
 const Home = () => import('@/components/Home.vue')
+const Shop = () => import('@/components/Shop.vue')
 const Register = () => import('@/components/Register.vue')
 /* Guest Component */
 /* Layouts */
@@ -34,6 +35,20 @@ const routes = [
             }
         ]
     },
+    {
+        component: DahboardLayout,        
+         children: [
+             {
+                 name: "shop",
+                 path: "/shop",
+                 component: Shop,
+                 meta: {
+                     middleware: "guest",
+                     title: `Shop`
+                 }
+             }
+         ]
+     },
     {
         name: "admin_login",
         path: "/admin/login",
