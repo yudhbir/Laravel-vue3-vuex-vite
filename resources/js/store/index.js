@@ -4,6 +4,7 @@ import auth from '@/store/auth'
 import admin from '@/store/admin'
 import breed from '@/store/breed'
 import puppies from '@/store/puppies'
+import shop from '@/store/shop'
 const store = createStore({
     plugins:[
         createPersistedState()
@@ -12,7 +13,8 @@ const store = createStore({
         auth,
         admin,
         breed,
-        puppies
+        puppies,
+        shop
     }
 })
 export default store
