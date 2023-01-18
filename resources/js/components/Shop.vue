@@ -2,21 +2,21 @@
   <div class="container">
   <div class="row">
     <div class="col-3">
-        <shopfiltersidebar />
+        <shopfiltersidebar :shop-filter="shop_filter" @filter_sidebar="filter_siderbar_result" :breed-list="shopBreeds" @clear_filter="clear_filter_result"/>
     </div>
     <div class="col-9">
         <div class="row">
-            <div class="col-3">
+            <div class="col-3 mb-2" v-for="puppy in shopListing?.data" :key="puppy.id">
                 <div class="card">
-                    <img src="/images/prod.jpg" class="card-img-top" alt="...">
+                    <img :src="puppy.imageUrl" class="card-img-top" alt="...">
                     <div class="card-body">
-                        <p class="card-text"> Wallace </p>
-                        <p class="card-text">Cavapoo</p>
-                        <p class="card-text">5 Week</p>
+                        <p class="card-text"> {{puppy.name}} </p>
+                        <p class="card-text">{{puppy.collection}}</p>
+                        <p class="card-text">{{puppy.weeks}}</p>
                     </div>
                 </div>
             </div>
-            <div class="col-3">
+            <div class="col-3 mb-2">
                 <div class="card">
                     <img src="/images/prod.jpg" class="card-img-top" alt="...">
                     <div class="card-body">
@@ -27,7 +27,7 @@
                 </div>
             </div>
             
-            <div class="col-3">
+            <div class="col-3 mb-2">
                 <div class="card">
                     <img src="/images/prod.jpg" class="card-img-top" alt="...">
                     <div class="card-body">
@@ -37,7 +37,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-3">
+            <div class="col-3 mb-2">
                 <div class="card">
                     <img src="/images/prod.jpg" class="card-img-top" alt="...">
                     <div class="card-body">
@@ -57,9 +57,19 @@
 <script>
 import shopfiltersidebar from './extensions/ShopFilterSidebar.vue'
 import {mapActions,mapState} from 'vuex'
-import { method } from 'lodash';
 export default {
     name:"Shop",
+    data(){
+        return{
+            shop_filter:{
+                gender:[],
+                breed:[],
+                doodle:'',
+                age:[],
+                color:[],
+            }
+        }
+    },
     components:{
         shopfiltersidebar
     },
@@ -70,11 +80,24 @@ export default {
         ...mapActions({
             puppy_list:'shop/listing',
             breed_list:'shop/breeds',
-        })
+            filter_result:'shop/filteration',
+        }),
+        async puppylist(){
+            this.puppy_list();
+        },        
+        async filter_siderbar_result(data){
+            console.log(data);
+            this.filter_result(data);
+        },
+        async clear_filter_result(){
+            this.puppy_list();
+        }
     },
     mounted: async function(){
-        await this.$nextTick(this.puppylist);
-        await this.$nextTick(this.breed_list);
+        await this.$nextTick(() => {
+            this.puppylist();
+            this.breed_list();
+        });        
     }
 }
 </script>

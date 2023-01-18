@@ -50,6 +50,17 @@ export default {
             }).catch(({response:{data}})=>{               
                 commit('SET_PROCESSING',false)
             })
-        }      
+        },
+        filteration({commit},data){
+            return axios.get('/api/admin/puppies/list',{params: data} ).then(({data})=>{
+                // console.log(data);
+                if(data.success){
+                    commit('SET_PROCESSING',false);
+                    commit('SHOP_PUPPIES_LISTING',data.result);
+                }
+            }).catch(({response:{data}})=>{               
+                commit('SET_PROCESSING',false)
+            })
+        },      
     }
 }

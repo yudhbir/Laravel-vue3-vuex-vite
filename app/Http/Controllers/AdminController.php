@@ -10,6 +10,7 @@ use App\Models\Breed;
 use App\Models\Puppies;
 use Session;
 use File;
+use DB;
  
 class AdminController extends Controller{
     
@@ -73,8 +74,30 @@ class AdminController extends Controller{
         return response()->json(['success' => true,'result'=>[],'msg'=>'Record has been deleted successfully.'], $this->successStatus);
     }
     public function puppies(Request $request){
-        $result=Puppies::paginate(10);
+        $result=Puppies::select('tbl_puppies.*')->Join('tbl_breed', 'tbl_puppies.breed', '=', 'tbl_breed.id');
         $heading="Puppies";
+        if(!empty($request->query('age'))){
+            $result->whereIn(DB::raw('FLOOR(DATEDIFF(DATE(now()), DATE(dob))/7)'), $request->query('age'));
+        }
+        if(!empty($request->query('breed'))){
+            $result->whereIn('tbl_puppies.breed', $request->query('breed'));
+        }
+        if(!empty($request->query('gender'))){
+            $gender=$request->query('gender');
+            if(in_array('3',$gender)){
+                $gender[]=1;
+                $gender[]=2;
+            }
+            $gender=array_unique($gender);
+            $result->whereIn('gender', $gender);
+        }
+        if(!empty($request->query('color'))){
+            $result->whereIn('color', $request->query('color'));
+        }
+        if(!empty($request->query('doodle'))){
+            $result->where('tbl_breed.doodle', 1);
+        }
+        $result=$result->paginate(10);
         return response()->json(['success' => true,'result'=>$result,'heading'=>$heading], $this->successStatus);
     }
     public function puppies_edit(Request $request,$id=null){        
