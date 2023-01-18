@@ -90,6 +90,14 @@ export default {
             this.filter_result(data);
         },
         async clear_filter_result(){
+            let newOrExistingProps={
+                gender:[],
+                breed:[],
+                doodle:'',
+                age:[],
+                color:[],
+            }
+            this.shop_filter = {...this.shop_filter, ...newOrExistingProps}
             this.puppy_list();
         }
     },

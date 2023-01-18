@@ -20,7 +20,7 @@
                         <li class="nav-item"><a href="" class="nav-link" >PuppySpot Promise</a></li>
                         <li class="nav-item"><a href="" class="nav-link" >About Us</a></li>
                         <li class="nav-item"><a href="" class="nav-link" >Resource Center</a></li>
-                        <li class="nav-item"><a href="" class="nav-link" > Shop</a></li>
+                        <li class="nav-item"><router-link :to="{name:'shop'}" class="nav-link" > Shop</router-link></li>
                         <li class="nav-item"><a class="nav-link" href=""> Blog</a></li>
                     </ul>
                 </div>                

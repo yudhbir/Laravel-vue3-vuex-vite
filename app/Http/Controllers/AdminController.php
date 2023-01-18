@@ -77,7 +77,13 @@ class AdminController extends Controller{
         $result=Puppies::select('tbl_puppies.*')->Join('tbl_breed', 'tbl_puppies.breed', '=', 'tbl_breed.id');
         $heading="Puppies";
         if(!empty($request->query('age'))){
-            $result->whereIn(DB::raw('FLOOR(DATEDIFF(DATE(now()), DATE(dob))/7)'), $request->query('age'));
+            if(!in_array('all',$request->query('age'))){
+                if(in_array('20',$request->query('age'))){
+                    $result->where(DB::raw('FLOOR(DATEDIFF(DATE(now()), DATE(dob))/7)'),'>', "16");
+                }else{
+                    $result->whereIn(DB::raw('FLOOR(DATEDIFF(DATE(now()), DATE(dob))/7)'), $request->query('age'));
+                }
+            }
         }
         if(!empty($request->query('breed'))){
             $result->whereIn('tbl_puppies.breed', $request->query('breed'));

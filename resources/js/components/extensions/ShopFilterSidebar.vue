@@ -1,6 +1,8 @@
 <template>
     <div class="accordion" id="accordionExample"> 
-        <div class="d-inline-flex"><label> Filter : </label><button class="btn btn-primary" @click="clear_filter"> Clear Filter</button></div>       
+        <div class="d-inline-flex justify-content-around mb-2" style="width: 100%;">
+            <label class="form-label filter_label"> Filter : </label><button class="btn btn-primary" @click="clear_filter"> Clear Filter</button>
+        </div>       
         <div class="accordion-item">
             <h2 class="accordion-header" id="headingOne">
             <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
@@ -130,9 +132,9 @@ export default {
     props:['shopFilter','breedList'],
     methods:{       
         async activate_filter(event){
-            if(event.target.checked){
+            // if(event.target.checked){
                 this.$emit('filter_sidebar',this.shopFilter);
-            }
+            // }
         },
         async clear_filter(){
             this.$emit('clear_filter',this.shopFilter);
@@ -142,5 +144,8 @@ export default {
 </script>
 
 <style>
-
+.filter_label{
+    font-weight: bold;
+    padding: 0px 36px;
+}
 </style>
