@@ -5,7 +5,7 @@ export default {
     state:{
         puppiesInfo:{},
         breeds:{},
-        processing:false,
+        puppy_processing:false,
 
     },
     getters:{
@@ -15,7 +15,7 @@ export default {
     },
     mutations:{        
         SET_PROCESSING (state, value) {
-            state.processing = value
+            state.puppy_processing = value
         },
         SETUP_PUPPIES (state, value) {
             state.puppiesInfo = value
@@ -32,9 +32,10 @@ export default {
     actions:{
         add({commit},breed_info){
             // console.log(breed_info);return false;
+            commit('SET_PROCESSING',true);
             return axios.post('/api/admin/puppies/edit',breed_info).then(({data})=>{
                 if(data.success){
-                    commit('SET_PROCESSING',true)
+                    commit('SET_PROCESSING',false)
                     router.push({name:'admin_puppies_list'})
                 }
             }).catch(({response:{data}})=>{               
@@ -42,6 +43,7 @@ export default {
             })
         },
         listing({commit},page='1'){
+            commit('SET_PROCESSING',true);
             return axios.get('/api/admin/puppies/list?page='+page).then(({data})=>{
                 // console.log(data);
                 if(data.success){
@@ -53,6 +55,7 @@ export default {
             })
         },
         breeds({commit}){
+            commit('SET_PROCESSING',true);
             return axios.get('/api/admin/breed/list/all').then(({data})=>{
                 // console.log(data);
                 if(data.success){
@@ -64,6 +67,7 @@ export default {
             })
         },
         delete({commit},id){
+            commit('SET_PROCESSING',true);
             return axios.get('/api/admin/breed/delete/'+id).then(({data})=>{
                 // console.log(data);
                 if(data.success){
@@ -73,6 +77,9 @@ export default {
             }).catch(({response:{data}})=>{               
                 commit('SET_PROCESSING',false)
             })
-        }        
+        },
+        loading({commit},flag) {
+            commit('SET_PROCESSING',flag);
+        }       
     }
 }

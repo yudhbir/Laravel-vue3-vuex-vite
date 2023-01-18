@@ -1,4 +1,5 @@
 <template>
+    <Loader /> 
     <div class="loader-bg">
         <div class="loader-track">
             <div class="loader-fill"></div>
@@ -19,12 +20,14 @@ import '../../../../admin/assets/css/style.css';
 import AdminSideBar from './AdminSidebar.vue'
 import AdminNavigation from './AdminNavigation.vue'
 import AdminFooter from './AdminFooter.vue'
+import Loader from '../../helpers/Loader.vue'
 export default {
     name:'AdminMaster',
     components:{
         AdminSideBar,
         AdminNavigation,
         AdminFooter,
+        Loader,
 
     }
 

@@ -201,6 +201,7 @@ export default {
     methods:{
         ...mapActions({
             addPuppies:'puppies/add',
+            loading:'puppies/loading',
             // getBreed:'breed/get',
         }),
         async add_puppy(values){
@@ -223,6 +224,7 @@ export default {
     mounted: async function(){
         // Edit Case: 
         if(this.$route.params.id){
+            await this.loading(true);
             this.title='Edit';
             let id=this.$route.params.id;
             if(!!this.puppiesInfo.data){
@@ -247,6 +249,7 @@ export default {
                     puppy_id: _data[0]?.id,
                 }
                 this.puppies_info = {...this.puppies_info, ...newOrExistingProps}
+                await this.loading(false);
                 // console.log(this.breed);
             }
         }

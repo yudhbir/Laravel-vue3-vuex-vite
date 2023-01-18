@@ -1,5 +1,6 @@
 <template>
-    <div>
+    <div> 
+        <Loader />       
         <AppHeader></AppHeader>
         <!-- <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container-fluid">
@@ -44,11 +45,13 @@ import '../../../css/css/custom.css';
 import {mapActions} from 'vuex'
 import AppHeader from './Header.vue'
 import AppFooter from './Footer.vue'
+import Loader from '../helpers/Loader.vue'
 export default {
     name:"default-layout",
     components: {
         AppHeader,
-        AppFooter
+        AppFooter,
+        Loader
     },
     data(){
         return {
@@ -65,6 +68,7 @@ export default {
                 this.$router.push({name:"login"})
             })
         }
+        
     }
 }
 </script>

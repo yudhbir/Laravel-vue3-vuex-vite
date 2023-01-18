@@ -4,7 +4,7 @@ export default {
     state:{
         shopListing:{},
         shopBreeds:{},
-        processing:false,
+        shopprocessing:true,
 
     },
     getters:{
@@ -14,7 +14,7 @@ export default {
     },
     mutations:{        
         SET_PROCESSING (state, value) {
-            state.processing = value
+            state.shopprocessing = value
         },
         SHOP_PUPPIES_LISTING (state, value) {
             state.shopListing = value
@@ -30,6 +30,7 @@ export default {
     },
     actions:{        
         listing({commit},page='1'){
+            commit('SET_PROCESSING',true);
             return axios.get('/api/admin/puppies/list?page='+page).then(({data})=>{
                 // console.log(data);
                 if(data.success){
@@ -41,6 +42,7 @@ export default {
             })
         },
         breeds({commit}){
+            commit('SET_PROCESSING',true);
             return axios.get('/api/admin/breed/list/all').then(({data})=>{
                 // console.log(data);
                 if(data.success){
@@ -52,6 +54,7 @@ export default {
             })
         },
         filteration({commit},data){
+            commit('SET_PROCESSING',true);
             return axios.get('/api/admin/puppies/list',{params: data} ).then(({data})=>{
                 // console.log(data);
                 if(data.success){

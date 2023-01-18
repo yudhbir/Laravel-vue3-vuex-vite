@@ -74,7 +74,7 @@ export default {
         shopfiltersidebar
     },
     computed:{
-        ...mapState('shop',['shopListing','shopBreeds'])
+        ...mapState('shop',['shopListing','shopBreeds','processing'])
     },
     methods:{
         ...mapActions({
